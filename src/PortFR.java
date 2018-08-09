@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 import com.jcraft.jsch.*;
 
 
-public class PortFR {   //// PorForwarding y ejecución vía PipedInput. Pendiente recuperar Output
+public class PortFR {   //// PorForwarding y ejecuciÃ³n vÃ­a PipedInput. Pendiente recuperar Output
 	                    //// hay que agregar user info
 	
-	private static String username = "opegpae1";
-	private static String passwordA = "Mocaccino2018+", passwordB = "FN5ihAJo";
+	private static String username = "";
+	private static String passwordA = "", passwordB = "";
 	private static String hostA = "10.30.4.165", hostB = "10.250.2.152";
 	private static JSch jSch = new JSch();
 	private static int forwardedPort;
