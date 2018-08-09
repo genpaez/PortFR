@@ -3,53 +3,64 @@
 import javax.swing.JFrame;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PipedOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import java.awt.Color;
 
 public class UserInterface extends JFrame implements ActionListener{
-	private JTextField enviarText;
-	JTextArea respuestaText;
-	private JButton btnYes, pingBtn, btnClavePE, enviarBtn;
+	private JTextArea respuestaText;
+	private JButton btnYes;
+	private JButton btnClavePE, enviarBtn, btnEjecutarPruebas;
 
 	public UserInterface() {
 		setResizable(false);
 		getContentPane().setLayout(null);
-		this.setSize(600, 600);
+		this.setSize(600, 652);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		pingBtn = new JButton("Ping");
-		pingBtn.setBounds(271, 39, 154, 23);
-		getContentPane().add(pingBtn);
-		pingBtn.addActionListener(this);
-		
-		enviarText = new JTextField();
-		enviarText.setBounds(5, 39, 256, 23);
-		enviarText.setToolTipText("ingrese comando");
-		getContentPane().add(enviarText);
-		enviarText.setColumns(10);
-		
-		enviarBtn = new JButton("Ver interfaz");
-		enviarBtn.setBounds(5, 5, 146, 23);
+		enviarBtn = new JButton("");
+		enviarBtn.setBounds(5, 5, 173, 23);
 		getContentPane().add(enviarBtn);
 		enviarBtn.addActionListener(this);
 		
-		respuestaText = new JTextArea();
-		respuestaText.setBounds(5, 87, 579, 473);
-		getContentPane().add(respuestaText);
-		
-		btnYes = new JButton("Puerto PE");
-		btnYes.setBounds(161, 5, 101, 23);
+		btnYes = new JButton("");
+		btnYes.setBounds(188, 5, 193, 23);
 		getContentPane().add(btnYes);
 		btnYes.addActionListener(this);
 		
-		btnClavePE = new JButton("Protocolo BGP");
-		btnClavePE.setBounds(269, 5, 156, 23);
+		btnClavePE = new JButton("");
+		btnClavePE.setBounds(391, 5, 193, 23);
 		getContentPane().add(btnClavePE);
+		
+		respuestaText = new JTextArea();
+		respuestaText.setBackground(Color.BLACK);
+		respuestaText.setForeground(Color.GREEN);
+		respuestaText.setBounds(5, 102, 589, 521);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(5, 70, 589, 553);
+		getContentPane().add(scrollPane);
+		scrollPane.setViewportView(respuestaText);
+		
+		btnEjecutarPruebas = new JButton("Ejecutar pruebas");
+		btnEjecutarPruebas.setBounds(5, 36, 173, 23);
+		btnEjecutarPruebas.addActionListener(this);
+		getContentPane().add(btnEjecutarPruebas);
+		
+		
 		btnClavePE.addActionListener(this);
 		this.setVisible(true);
 	}
@@ -64,12 +75,15 @@ public class UserInterface extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource()==btnYes) {PortFR.verPuerto();}
 		
-		if(e.getSource()==btnClavePE) {PortFR.verBGP();}
-		
-		if(e.getSource()==enviarBtn) {PortFR.verInterfaz();}
-		
-		if(e.getSource()==pingBtn) {PortFR.enviarPing();}
+		if(e.getSource()==btnEjecutarPruebas) {
+			try {
+				PortFR.enviarComando();
+			} catch (IOException | JSchException | InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
 	}
 }
